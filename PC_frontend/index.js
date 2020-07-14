@@ -77,8 +77,8 @@ function displayCreateForm() {
 function createPc() {
     event.preventDefault()
     const pc = {
-        description: document.getElementById('name').value,
-        compleated: document.getElementById('description').checked
+        name: document.getElementById('name').value,
+        description: document.getElementById('description').value
     }
 
     fetch(BASE_URL+'/pcs', {
