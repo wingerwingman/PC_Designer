@@ -40,7 +40,8 @@ function attachClickToLinks () {
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
     document.getElementById("pcs").addEventListener('click', getPcs)
-    document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click, removePc'))
+    document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
+    document.querySelectorAll("#update-pc").forEach(pc => pc.addEventListener('click', editPc))
 }
 
 function displayPc() {
@@ -111,6 +112,28 @@ function removePc() {
         }
     })
     .then(event.target.parentElement.remove)
+}
+
+function editTodo(){
+    event.preventDefault()
+    clearForm()
+    let id = event.target.dataset.id
+    fetch(BASE_URL+'/pcs/${id}')
+    .then(resp => resp.json())
+    .then(pc => {
+        let pcFormDiv = document.getElementById('pc-form')
+        let html = `
+            <form data-id="${id}>
+                <label>Name</label>
+                <input type="text" id="name" value="${pc.name}">
+                <label>Complete:</label>
+                <input type="text" id="description" ${pc.description}>
+                <input type="submit">
+            </form>
+        `
+        todoFormDiv.innerHTML = html
+        document.querySelector('form').addEventListener('submit', udatePc)
+    })
 }
 
 class Pd {
