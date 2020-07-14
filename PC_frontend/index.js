@@ -59,3 +59,45 @@ function displayPc() {
         `
     })
 }
+
+function displayCreateForm() {
+    let pcFormDiv = document.getElementById('pc-form')
+    let html = `
+        <form>
+            <label>Name:</label>
+            <input type="text" id="name">
+            <label>Description:</label>
+            <input type="text" id="description">
+            <input type="submit">
+        </form>
+    `
+    pcFormDiv.innerHTML = html
+    document.querySelector('form').addEventListener('submit', createPc)
+}
+
+class Pd {
+    constructor(pc) {
+        this.id = pc.id
+        this.name = pc.name
+        this.description = todo.description 
+        this.parts = pc.parts
+    }
+
+    renderPc() {
+        return `
+        <li id="pc-${this.id}>
+                    <a href="#" data-id="${this.id}">${this.name}</a>
+                    - ${this.description}
+                    <ul id="parts">
+                    </ul>
+                    <button id="delete" data-id${this.id}>Delete</button>
+                    <button id="update-pc" data-id${this.id}>Edit</button>
+        </li>`
+    }
+    renderULs() {
+        let ul = document.querySelector(`li#pc-${this.id} #parts`)
+        this.parts.forEach(part => {
+                ul.innerHTML += `<li>${part.name}</li>`
+        })
+    }
+}
