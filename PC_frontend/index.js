@@ -6,8 +6,8 @@ window.addEventListener('load', () => {
 
 function getPcs() {
     clearForm() 
-    clearUls()
-    let showTodos = document.querySelector('#show-pc ul')
+    // clearULs()
+    let showPcs = document.querySelector('#show-pc ul')
     fetch(BASE_URL+"/pcs")
     .then(resp => resp.json())
     .then(pcs => {
@@ -25,12 +25,12 @@ function clearForm() {
     pcFormDiv.innerHTML = ""
 }
 
-function clearULs() {
-    let showPcs = document.querySelector('#show-pcs ul')
-    showPcs.innerHTML = ""
-    let showPc = document.querySelector('#show-pc')
-    showPcs.innerHTML = ""
-}
+// function clearULs() {
+//     let showPcs = document.querySelector('#show-pcs ul')
+//     showPcs.innerHTML = ""
+//     let showPc = document.querySelector('#show-pc')
+//     showPcs.innerHTML = ""
+// }
 
 function attachClickToLinks () {
     let pcs = document.querySelectorAll('li a')
@@ -40,8 +40,7 @@ function attachClickToLinks () {
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
     document.getElementById("pcs").addEventListener('click', getPcs)
-    document.querySelectoryAll("#delete").forEach(pc => pc.addEventListener('click, removePc'))
-    document.querySelectoryAll("#update-pc").forEach(pc => pc.addEventListener('click, editPc'))
+
 }
 
 function displayPc() {
@@ -75,11 +74,37 @@ function displayCreateForm() {
     document.querySelector('form').addEventListener('submit', createPc)
 }
 
+function createPc() {
+    event.preventDefault()
+    const pc = {
+        description: document.getElementById('name').value,
+        compleated: document.getElementById('description').checked
+    }
+
+    fetch(BASE_URL+'/pcs', {
+        method: "POST",
+        body: JSON.stringify(pc),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(resp => resp.json())
+    .then(pc => {
+        let showPcs = document.querySelector('#show-pcs ul')
+        let pd = new Pd(pc)
+        showPcs.innerHTML += pd.renderPc()
+        pd.renderULs()
+        attachClickToLinks()
+        clearForm()
+    })
+}
+
 class Pd {
     constructor(pc) {
         this.id = pc.id
         this.name = pc.name
-        this.description = todo.description 
+        this.description = pc.description 
         this.parts = pc.parts
     }
 
