@@ -6,7 +6,7 @@ window.addEventListener('load', () => {
 
 function getPcs() {
     clearForm() 
-    // clearULs()
+    clearULs()
     let showPcs = document.querySelector('#show-pc ul')
     fetch(BASE_URL+"/pcs")
     .then(resp => resp.json())
@@ -25,12 +25,12 @@ function clearForm() {
     pcFormDiv.innerHTML = ""
 }
 
-// function clearULs() {
-//     let showPcs = document.querySelector('#show-pcs ul')
-//     showPcs.innerHTML = ""
-//     let showPc = document.querySelector('#show-pc')
-//     showPcs.innerHTML = ""
-// }
+function clearULs() {
+    let showPcs = document.querySelector('#show-pcs ul')
+    showPcs.innerHTML = ""
+    let showPc = document.querySelector('#show-pc')
+    showPcs.innerHTML = ""
+}
 
 function attachClickToLinks () {
     let pcs = document.querySelectorAll('li a')
