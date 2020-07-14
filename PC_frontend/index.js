@@ -19,3 +19,15 @@ function getPcs() {
         attachClickToLinks()
     })
 }
+
+function clearForm() {
+    let pcFormDiv = document.getElementById('pc-form')
+    pcFormDiv.innerHTML = ""
+}
+
+function clearULs() {
+    let showPcs = document.querySelector('#show-pcs ul')
+    showPcs.innerHTML = ""
+    let showPc = document.querySelector('#show-pc')
+    showPcs.innerHTML = ""
+}
