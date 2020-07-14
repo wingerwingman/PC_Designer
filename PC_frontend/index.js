@@ -31,3 +31,31 @@ function clearULs() {
     let showPc = document.querySelector('#show-pc')
     showPcs.innerHTML = ""
 }
+
+function attachClickToLinks () {
+    let pcs = document.querySelectorAll('li a')
+    pcs.forEach(pc => {
+        pc.addEventListener('click', displaypc)
+    })
+
+    document.getElementById("pcForm").addEventListener('click', displayCreateForm)
+    document.getElementById("pcs").addEventListener('click', getPcs)
+    document.querySelectoryAll("#delete").forEach(pc => pc.addEventListener('click, removePc'))
+    document.querySelectoryAll("#update-pc").forEach(pc => pc.addEventListener('click, editPc'))
+}
+
+function displayPc() {
+    clearForm()
+    clearULs()
+    let id = event.target.dataset.id 
+    let showPcs = document.getElementById('main')
+    showPcs.innerHTML = ""
+    fetch(BASE_URL+'/pcs/'+id)
+    .then(resp => resp.json())
+    .then(pc => {
+        showPcs.innerHTML += `
+        <h3>${pc.name}</h3>
+        <p>${pc.description}</p>
+        `
+    })
+}
