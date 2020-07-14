@@ -40,7 +40,7 @@ function attachClickToLinks () {
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
     document.getElementById("pcs").addEventListener('click', getPcs)
-
+    document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click, removePc'))
 }
 
 function displayPc() {
@@ -98,6 +98,19 @@ function createPc() {
         attachClickToLinks()
         clearForm()
     })
+}
+
+function removePc() {
+    event.preventDefault() 
+    clearForm()
+    fetch(BASE_URL+`/pcs/${event.target.dataset.id}`, {
+        method: 'DELETE',
+        headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+        }
+    })
+    .then(event.target.parentElement.remove)
 }
 
 class Pd {
