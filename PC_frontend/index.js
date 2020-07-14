@@ -114,7 +114,7 @@ function removePc() {
     .then(event.target.parentElement.remove)
 }
 
-function editTodo(){
+function editPc(){
     event.preventDefault()
     clearForm()
     let id = event.target.dataset.id
@@ -131,8 +131,35 @@ function editTodo(){
                 <input type="submit">
             </form>
         `
-        todoFormDiv.innerHTML = html
-        document.querySelector('form').addEventListener('submit', udatePc)
+        pcFormDiv.innerHTML = html
+        document.querySelector('form').addEventListener('submit', updatePc)
+    })
+}
+
+function updatePc() {
+    event.preventDefault()
+    let showPc = document.querySelector('#show-pc')
+    showPc.innerHTML = ""
+    let id = event.target.dataset.id
+    const pc = {
+        name: document.getElementById("name").value,
+        description: document.getElementById("description").value
+    }
+    fetch(BASE_URL+`/pcs/${id}`, {
+        method: 'PATCH',
+        headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+        },
+        body: JSON.stringify(todo)
+    })
+    .then(resp => resp.json())
+    .then(pc => {
+        let pd = new Pd(pc)
+        document.querySelector(`li a[data-id="${id}"]`).parentElement+= pd.renderTodo()
+        pd.renderULs()
+        attachClickToLinks()
+        clearForm()
     })
 }
 
