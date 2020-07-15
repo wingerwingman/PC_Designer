@@ -111,7 +111,7 @@ function removePc() {
         'Accept': 'application/json'
         }
     })
-    .then(event.target.parentElement.remove)
+    .then(event.target.parentElement.remove())
 }
 
 function editPc(){
@@ -183,7 +183,7 @@ class Pd {
         </li>`
     }
     renderULs() {
-        let ul = document.querySelector(`li#pc-${this.id} #parts`)
+        let ul = document.querySelector(`ul#parts`)
         this.parts.forEach(part => {
                 ul.innerHTML += `<li>${part.name}</li>`
         })
