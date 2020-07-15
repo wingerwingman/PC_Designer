@@ -41,7 +41,7 @@ function attachClickToLinks () {
     })
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
-    document.getElementById("pcs").addEventListener('click', getPcs)
+    // document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
     document.querySelectorAll("#update-pc").forEach(pc => pc.addEventListener('click', editPc))
 }
@@ -106,7 +106,7 @@ function createPc() {
 function removePc() {
     event.preventDefault() 
     clearForm()
-    fetch(BASE_URL+`/pcs/${event.target.dataset.id}`, {
+    fetch(BASE_URL+`/pcs/${event.target.parentElement.dataset.id}`, {
         method: 'DELETE',
         headers: {
         'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ function editPc(){
             <form data-id="${id}>
                 <label>Name</label>
                 <input type="text" id="name" value="${pc.name}">
-                <label>Complete:</label>
+                <label>Description:</label>
                 <input type="text" id="description" ${pc.description}>
                 <input type="submit">
             </form>
