@@ -25,7 +25,8 @@ module PcBackend
     config.middleware.insert_before 0, Rack::Cors do
       allow do 
         origins '*'
-        resource '*', headers: :any, methods: [:get, :post, :delete, :update]
+        # Access-Control-Allow-Origin: '*'
+        resource '*', headers: :any, methods: [:get, :put, :post, :patch, :delete, :update, :options, :head]
       end
     end
     # Initialize configuration defaults for originally generated Rails version.

@@ -41,9 +41,10 @@ function attachClickToLinks () {
     })
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
-    // document.getElementById("pcs").addEventListener('click', getPcs)
+    document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
     document.querySelectorAll("#update-pc").forEach(pc => pc.addEventListener('click', editPc))
+    // document.getElementById("ulForm").addEventListener('click', displayCreateULForm)
 }
 
 function displayPc() {
@@ -76,6 +77,21 @@ function displayCreateForm() {
     pcFormDiv.innerHTML = html
     document.querySelector('form').addEventListener('submit', createPc)
 }
+
+// function displayCreateULForm() {
+//     let pcFormDiv = document.getElementById('pc-form')
+//     let html = `
+//         <form>
+//             <label>Part:</label>
+//             <input type="text" id="Part">
+//             <label>Price:</label>
+//             <input type="text" id="price">
+//             <input type="submit">
+//         </form>
+//     `
+//     pcFormDiv.innerHTML = html
+//     document.querySelector('form').addEventListener('submit', createPc)
+// }
 
 function createPc() {
     event.preventDefault()
@@ -118,14 +134,14 @@ function removePc() {
 
 function editPc(){
     event.preventDefault()
-    clearForm()
-    let id = event.target.dataset.id
-    fetch(BASE_URL+'/pcs/${id}')
+    // clearForm()
+    let id = event.target.parentElement.dataset.id
+    fetch(BASE_URL+`/pcs/${id}`)
     .then(resp => resp.json())
     .then(pc => {
         let pcFormDiv = document.getElementById('pc-form')
         let html = `
-            <form data-id="${id}>
+            <form data-id="${id}">
                 <label>Name</label>
                 <input type="text" id="name" value="${pc.name}">
                 <label>Description:</label>
@@ -149,16 +165,17 @@ function updatePc() {
     }
     fetch(BASE_URL+`/pcs/${id}`, {
         method: 'PATCH',
+        body: JSON.stringify(pc),
         headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
-        },
-        body: JSON.stringify(todo)
+        }
     })
     .then(resp => resp.json())
     .then(pc => {
+        let showPcs = document.querySelector('#show-pcs ul')
         let pd = new Pd(pc)
-        document.querySelector(`li a[data-id="${id}"]`).parentElement+= pd.renderTodo()
+        showPcs.innerHTML += pd.renderPc()
         pd.renderULs()
         attachClickToLinks()
         clearForm()
