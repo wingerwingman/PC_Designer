@@ -1,5 +1,7 @@
 const BASE_URL = 'http://localhost:3000'
 
+getPcs();
+
 window.addEventListener('load', () => {
     attachClickToLinks()
 })
