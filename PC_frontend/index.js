@@ -37,14 +37,14 @@ function clearULs() {
 function attachClickToLinks () {
     let pcs = document.querySelectorAll('li a')
     pcs.forEach(pc => {
-        pc.addEventListener('click', displaypc)
+        pc.addEventListener('click', displayPc)
     })
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
     document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
     document.querySelectorAll("#update-pc").forEach(pc => pc.addEventListener('click', editPc))
-    // document.getElementById("ulForm").addEventListener('click', displayCreateULForm)
+    document.getElementById("partForm").addEventListener('click', displayCreateULForm)
 }
 
 function displayPc() {
@@ -59,6 +59,7 @@ function displayPc() {
         showPcs.innerHTML += `
         <h3>${pc.name}</h3>
         <p>${pc.description}</p>
+        
         `
     })
 }
@@ -169,7 +170,7 @@ function editPc(){
         }
 
         function displayCreateULForm() {
-            let pcPartFormDiv = document.getElementById('pc-part-form')
+            let partFormDiv = document.getElementById('part-form')
             let html = `
                 <form>
                     <label>Part:</label>
@@ -179,7 +180,7 @@ function editPc(){
                     <input type="submit">
                 </form>
             `
-            pcPartFormDiv.innerHTML = html
+            partFormDiv.innerHTML = html
             document.querySelector('form').addEventListener('submit', createPart)
         }
 
@@ -205,8 +206,13 @@ function editPc(){
                 showPcs.innerHTML += pd.renderPc()
                 pd.renderULs()
                 attachClickToLinks()
-                clearForm()
+                clearPartForm()
             })
+        }
+
+        function clearPartForm() {
+            let pcFormDiv = document.getElementById('part-form')
+            pcFormDiv.innerHTML = ""
         }
         
         class Pd {
@@ -222,6 +228,8 @@ function editPc(){
                 <li id="pc-${this.id}>
                 <a href="#" data-id="${this.id}">${this.name}</a>
                 - ${this.description}
+                <a id="partForm" href="#">Make part</a>
+                <div id="part-form"></div>
                 <ul id="parts">
                 </ul>
                 <button id="delete" data-id${this.id}>Delete</button>
@@ -231,7 +239,10 @@ function editPc(){
             renderULs() {
                 let ul = document.querySelector(`ul#parts`)
                 this.parts.forEach(part => {
-                    ul.innerHTML += `<li>${part.name}</li>`
+                    ul.innerHTML += `
+                    <li>${part.name}</li>
+                    
+                    `
                 })
             }
         }
