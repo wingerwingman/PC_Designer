@@ -44,7 +44,7 @@ function attachClickToLinks () {
     document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
     document.querySelectorAll("#update-pc").forEach(pc => pc.addEventListener('click', editPc))
-    document.getElementById("partForm").addEventListener('click', displayCreateULForm)
+    document.getElementById("partForm").addEventListener('click', displayCreatePartForm)
 }
 
 function displayPc() {
@@ -131,118 +131,121 @@ function editPc(){
         <form data-id="${id}">
         <label>Name</label>
         <input type="text" id="name" value="${pc.name}">
-                <label>Description:</label>
-                <input type="text" id="description" ${pc.description}>
-                <input type="submit">
-                </form>
-                `
-                pcFormDiv.innerHTML = html
-                document.querySelector('form').addEventListener('submit', updatePc)
-            })
-        }
+        <label>Description:</label>
+        <input type="text" id="description" ${pc.description}>
+        <input type="submit">
+        </form>
+        `
+        pcFormDiv.innerHTML = html
+        document.querySelector('form').addEventListener('submit', updatePc)
+    })
+}
         
-        function updatePc() {
-            event.preventDefault()
-            let showPc = document.querySelector('#show-pc')
-            showPc.innerHTML = ""
-            let id = event.target.dataset.id
-            const pc = {
-                name: document.getElementById("name").value,
-                description: document.getElementById("description").value
-            }
-            fetch(BASE_URL+`/pcs/${id}`, {
-                method: 'PATCH',
-                body: JSON.stringify(pc),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(resp => resp.json())
-            .then(pc => {
-                let showPcs = document.querySelector('#show-pcs ul')
-                let pd = new Pd(pc)
-                showPcs.innerHTML += pd.renderPc()
-                pd.renderULs()
-                attachClickToLinks()
-                clearForm()
-            })
+function updatePc() {
+    event.preventDefault()
+    let showPc = document.querySelector('#show-pc')
+    showPc.innerHTML = ""
+    let id = event.target.dataset.id
+    const pc = {
+        name: document.getElementById("name").value,
+        description: document.getElementById("description").value
+    }
+    fetch(BASE_URL+`/pcs/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(pc),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
+    })
+    .then(resp => resp.json())
+    .then(pc => {
+        let pd = new Pd(pc)
+        document.querySelector(`li a[data-id="${pd}"]`) += pd.renderPc()
+        td.renderULs()
+        attachClickToLinks()
+        clearForm()
+    })
+}
 
-        function displayCreateULForm() {
-            let partFormDiv = document.getElementById('part-form')
-            let html = `
-                <form>
-                    <label>Part:</label>
-                    <input type="text" id="Part">
-                    <label>Price:</label>
-                    <input type="text" id="price">
-                    <input type="submit">
-                </form>
-            `
-            partFormDiv.innerHTML = html
-            document.querySelector('form').addEventListener('submit', createPart)
-        }
+function displayCreatePartForm() {
+    let pc = this.parentElement.dataset.id
+    let partFormDiv = document.getElementById('part-form')
+    let html = `
+        <form>
+            <label>Part:</label>
+            <input type="text" id="name">
+            <label>Price:</label>
+            <input type="text" id="price">
+            <input type="submit">
+        </form>
+    `
+    partFormDiv.innerHTML = html
+    document.querySelector('form').addEventListener('submit', createPart)
+}
 
-        function createPart() {
-            event.preventDefault()
-            const part = {
-                name: document.getElementById('name').value,
-                description: document.getElementById('price').value
-            }
-        
-            fetch(BASE_URL+'/pcs', {
-                method: "POST",
-                body: JSON.stringify(pc),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                }
-            })
-            .then(resp => resp.json())
-            .then(pc => {
-                let showPcs = document.querySelector('#show-pcs ul')
-                let pd = new Pd(pc)
-                showPcs.innerHTML += pd.renderPc()
-                pd.renderULs()
-                attachClickToLinks()
-                clearPartForm()
-            })
-        }
+function createPart() {
+    let pc = this.parentNode.parentElement.dataset.id
+    event.preventDefault()
+    const part = {
+        name: document.getElementById('name').value,
+        description: document.getElementById('price').value
+    }
 
-        function clearPartForm() {
-            let pcFormDiv = document.getElementById('part-form')
-            pcFormDiv.innerHTML = ""
+    fetch(BASE_URL+'/parts', {
+        method: "POST",
+        body: JSON.stringify(parts),
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
-        
-        class Pd {
-            constructor(pc) {
-                this.id = pc.id
-                this.name = pc.name
-                this.description = pc.description 
-                this.parts = pc.parts
-            }
+    })
+    .then(resp => resp.json())
+    .then(pc => {
+        let showPcs = document.querySelector('#show-pcs ul')
+        let pd = new Pd(pc)
+        showPcs.innerHTML += pd.renderPc()
+        pd.renderULs()
+        attachClickToLinks()
+        clearPartForm()
+    })
+}
+
+function clearPartForm() {
+    let pcFormDiv = document.getElementById('part-form')
+    pcFormDiv.innerHTML = ""
+}
+
+
+
+class Pd {
+    constructor(pc) {
+        this.id = pc.id
+        this.name = pc.name
+        this.description = pc.description 
+        this.parts = pc.parts
+    }
             
-            renderPc() {
-                return `
-                <li id="pc-${this.id}>
-                <a href="#" data-id="${this.id}">${this.name}</a>
-                - ${this.description}
-                <a id="partForm" href="#">Make part</a>
-                <div id="part-form"></div>
-                <ul id="parts">
-                </ul>
-                <button id="delete" data-id${this.id}>Delete</button>
-                <button id="update-pc" data-id${this.id}>Edit</button>
-                </li>`
-            }
-            renderULs() {
-                let ul = document.querySelector(`ul#parts`)
-                this.parts.forEach(part => {
-                    ul.innerHTML += `
-                    <li>${part.name}</li>
-                    
-                    `
-                })
-            }
-        }
+    renderPc() {
+        return `
+        <li id="pc-${this.id}>
+        <a href="#" data-id="${this.id}">${this.name}</a>
+        - ${this.description}
+        <a id="partForm" href="#">Make part</a>
+        <div id="part-form"></div>
+        <ul id="parts">
+        </ul>
+        <button id="delete" data-id${this.id}>Delete</button>
+        <button id="update-pc" data-id${this.id}>Edit</button>
+        </li>`
+    }
+    renderULs() {
+        let ul = document.querySelector(`ul#parts`)
+        this.parts.forEach(part => {
+            ul.innerHTML += `
+            <li>${part.name}</li>
+            
+            `
+        })
+    }
+}
