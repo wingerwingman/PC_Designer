@@ -36,14 +36,14 @@ function clearULs() {
 
 function attachClickToLinks () {
     let pcs = document.querySelectorAll('li a')
-    pcs.forEach(pc => {
-        pc.addEventListener('click', displayPc)
-    })
+    // pcs.forEach(pc => {
+    //     pc.addEventListener('click', displayPc)
+    // })
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
-    document.getElementById("pcs").addEventListener('click', getPcs)
+    // document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
-    document.getElementById("partForm").addEventListener('click', displayCreatePartForm)
+    document.querySelectorAll("#partForm").forEach(pc => pc.addEventListener('click', displayCreatePartForm))
 }
 
 function displayPc() {
@@ -119,7 +119,7 @@ function removePc() {
 }
 
 function displayCreatePartForm() {
-    let pc = this.parentElement.dataset.id
+    let pc = this.dataset.id
     let partFormDiv = document.getElementById('part-form')
     let html = `
         <form>
@@ -131,18 +131,18 @@ function displayCreatePartForm() {
         </form>
     `
     partFormDiv.innerHTML = html
-    document.querySelector('form').addEventListener('submit', createPart)
+    document.querySelector('form').addEventListener('submit',  createPart(pc))
 }
 
-function createPart() {
-    let pc = this.parentNode.parentElement.dataset.id
+function createPart(pc) {
+    // let pc = this.parentNode.parentElement.dataset.id
     event.preventDefault()
     const part = {
         name: document.getElementById('name').value,
         description: document.getElementById('price').value
     }
 
-    fetch(BASE_URL+'/parts', {
+    fetch(BASE_URL+'/pc.parts', {
         method: "POST",
         body: JSON.stringify(parts),
         headers: {
@@ -179,10 +179,10 @@ class Pd {
     renderPc() {
         return `
         <li id="pc-${this.id}>
-        <a href="#" data-id="${this.id}">${this.name}</a>
-        - ${this.description}
+        <li data-id="${this.id}">${this.name}
+        - ${this.description}</li>
         <br>
-        <button id="partForm">Make part</button>
+        <button id="partForm" data-id="${this.id}">Make part</button>
         <div id="part-form"></div>
         <ul id="parts">
         </ul>
@@ -194,7 +194,7 @@ class Pd {
         this.parts.forEach(part => {
             ul.innerHTML += `
             <li>${part.name}</li>
-            
+            <li>${part.price}</li>
             `
         })
     }
