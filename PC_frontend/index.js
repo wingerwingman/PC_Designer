@@ -119,55 +119,6 @@ function removePc() {
     .then(event.target.parentElement.remove())
 }
 
-function editPc(){
-    event.preventDefault()
-    // clearForm()
-    let id = event.target.parentElement.dataset.id
-    fetch(BASE_URL+`/pcs/${id}`)
-    .then(resp => resp.json())
-    .then(pc => {
-        let pcFormDiv = document.getElementById('pc-form')
-        let html = `
-        <form data-id="${id}">
-        <label>Name</label>
-        <input type="text" id="name" value="${pc.name}">
-        <label>Description:</label>
-        <input type="text" id="description" ${pc.description}>
-        <input type="submit">
-        </form>
-        `
-        pcFormDiv.innerHTML = html
-        document.querySelector('form').addEventListener('submit', updatePc)
-    })
-}
-        
-function updatePc() {
-    event.preventDefault()
-    let showPc = document.querySelector('#show-pc')
-    showPc.innerHTML = ""
-    let id = event.target.dataset.id
-    const pc = {
-        name: document.getElementById("name").value,
-        description: document.getElementById("description").value
-    }
-    fetch(BASE_URL+`/pcs/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(pc),
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    })
-    .then(resp => resp.json())
-    .then(pc => {
-        let pd = new Pd(pc)
-        document.querySelector(`li a[data-id="${pd}"]`) += pd.renderPc()
-        td.renderULs()
-        attachClickToLinks()
-        clearForm()
-    })
-}
-
 function displayCreatePartForm() {
     let pc = this.parentElement.dataset.id
     let partFormDiv = document.getElementById('part-form')
