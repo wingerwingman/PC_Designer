@@ -139,7 +139,7 @@ function createPart(id) {
     event.preventDefault()
     const part = {
         name: document.getElementById('name').value,
-        description: document.getElementById('price').value
+        price: document.getElementById('price').value
     }
 
     fetch(BASE_URL+`/pcs/${pc}/parts`, {
@@ -151,11 +151,10 @@ function createPart(id) {
         }
     })
     .then(resp => resp.json())
-    .then(pc => {
+    .then(part => {
         let showPcs = document.querySelector('#show-pcs ul')
-        let pd = new Pd(pc)
-        showPcs.innerHTML += pd.renderPc()
-        pd.renderULs()
+        let pd = new Pd()
+        showParts.innerHTML += pd.renderULs()
         attachClickToLinks()
         clearPartForm()
     })
@@ -193,8 +192,7 @@ class Pd {
         let ul = document.querySelector(`ul#parts`)
         this.parts.forEach(part => {
             ul.innerHTML += `
-            <li>${part.name}</li>
-            <li>${part.price}</li>
+            <li>Part: ${part.name} $${part.price}</li>
             `
         })
     }

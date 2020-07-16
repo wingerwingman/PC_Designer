@@ -46,6 +46,6 @@ class PcsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def pc_params
-      params.require(:pc).permit(:name, :description)
+      params.require(:pc).permit(:name, :description, :part_id)
     end
 end

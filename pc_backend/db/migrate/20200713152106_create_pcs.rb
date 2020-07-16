@@ -3,6 +3,7 @@ class CreatePcs < ActiveRecord::Migration[6.0]
     create_table :pcs do |t|
       t.string :name
       t.string :description
+      t.integer :part_id
 
       t.timestamps
     end
