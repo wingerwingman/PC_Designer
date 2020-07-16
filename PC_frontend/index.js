@@ -119,10 +119,10 @@ function removePc() {
 }
 
 function displayCreatePartForm() {
-    let pc = this.dataset.id
+    let id = this.dataset.id
     let partFormDiv = document.getElementById('part-form')
     let html = `
-        <form>
+        <form data-id='${id}'>
             <label>Part:</label>
             <input type="text" id="name">
             <label>Price:</label>
@@ -131,20 +131,20 @@ function displayCreatePartForm() {
         </form>
     `
     partFormDiv.innerHTML = html
-    document.querySelector('form').addEventListener('submit',  createPart(pc))
+    document.querySelector('form').addEventListener('submit',  createPart)
 }
 
-function createPart(pc) {
-    // let pc = this.parentNode.parentElement.dataset.id
+function createPart(id) {
+    let pc = this.dataset.id
     event.preventDefault()
     const part = {
         name: document.getElementById('name').value,
         description: document.getElementById('price').value
     }
 
-    fetch(BASE_URL+'/pc.parts', {
+    fetch(BASE_URL+`/pcs/${pc}/parts`, {
         method: "POST",
-        body: JSON.stringify(parts),
+        body: JSON.stringify(part),
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
