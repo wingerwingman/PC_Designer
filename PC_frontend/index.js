@@ -43,7 +43,6 @@ function attachClickToLinks () {
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
     document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
-    document.querySelectorAll("#update-pc").forEach(pc => pc.addEventListener('click', editPc))
     document.getElementById("partForm").addEventListener('click', displayCreatePartForm)
 }
 
@@ -182,12 +181,12 @@ class Pd {
         <li id="pc-${this.id}>
         <a href="#" data-id="${this.id}">${this.name}</a>
         - ${this.description}
-        <a id="partForm" href="#">Make part</a>
+        <br>
+        <button id="partForm">Make part</button>
         <div id="part-form"></div>
         <ul id="parts">
         </ul>
         <button id="delete" data-id${this.id}>Delete</button>
-        <button id="update-pc" data-id${this.id}>Edit</button>
         </li>`
     }
     renderULs() {
