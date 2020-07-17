@@ -21,10 +21,13 @@ class Pd {
     }
     renderULs() {
         let ul = document.querySelector(`ul#parts`)
+        let total = 0;
         this.parts.forEach(part => {
+            total += part.price;
             ul.innerHTML += `
             <li>Part: ${part.name} $${part.price}<button id="deletePart" data-id="${part.id}">Delete</button></li>
             `
         })
+        ul.innerHTML += `Total: ${total}`
     }
 }
