@@ -153,7 +153,7 @@ function createPart(id) {
     .then(part => {
         let showPart = document.querySelector('#parts').innerHTML += `
         <li id='${part.id}'>
-        Part: ${part.name} $${part.price}
+        Part: ${part.name} $${part.price}<button id="deletePart" data-id="${part.id}">Delete</button></li>
         </li>`
         attachClickToLinks()
         clearPartForm()
@@ -172,11 +172,18 @@ function removePart() {
         }
     })
     .then(event.target.parentElement.remove())
+    // .then(clearParts())
+    // .then(Pd.renderULs())
 }
 
 function clearPartForm() {
     let pcFormDiv = document.getElementById('part-form')
     pcFormDiv.innerHTML = ""
+}
+
+function clearParts () {
+    let clear = document.getElementById('parts')
+    clear.innerHTML = ""
 }
 
 
