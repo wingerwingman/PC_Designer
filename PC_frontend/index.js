@@ -36,14 +36,11 @@ function clearULs() {
 
 function attachClickToLinks () {
     let pcs = document.querySelectorAll('li a')
-    // pcs.forEach(pc => {
-    //     pc.addEventListener('click', displayPc)
-    // })
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
-    // document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
     document.querySelectorAll("#partForm").forEach(pc => pc.addEventListener('click', displayCreatePartForm))
+    document.querySelectorAll("#deletePart").forEach(part => part.addEventListener('click', removePart))
 }
 
 function displayPc() {
@@ -154,13 +151,27 @@ function createPart(id) {
     })
     .then(resp => resp.json())
     .then(part => {
-        let showPcs = document.querySelector('#show-pcs ul')
-        let pd = new Pd(pc)
-        showPcs.innerHTML += pd.renderPc()
-        pd.renderULs()
+        let showPart = document.querySelector('#parts').innerHTML += `
+        <li id='${part.id}'>
+        Part: ${part.name} $${part.price}
+        </li>`
         attachClickToLinks()
-        clearForm()
+        clearPartForm()
     })
+}
+
+function removePart() {
+    let id = this.dataset.id 
+    event.preventDefault()
+    clearPartForm()
+    fetch(BASE_URL+`/parts/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(event.target.parentElement.remove())
 }
 
 function clearPartForm() {
@@ -195,7 +206,7 @@ class Pd {
         let ul = document.querySelector(`ul#parts`)
         this.parts.forEach(part => {
             ul.innerHTML += `
-            <li>Part: ${part.name} $${part.price}</li>
+            <li>Part: ${part.name} $${part.price}<button id="deletePart" data-id="${part.id}">Delete</button></li>
             `
         })
     }

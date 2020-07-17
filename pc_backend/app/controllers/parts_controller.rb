@@ -1,6 +1,6 @@
 require 'pry'
 class PartsController < ApplicationController
-    before_action :set_part, only: [:show]
+    before_action :set_part, only: [:show, :destroy, :update]
 
   def index
     @parts = Parts.all
@@ -32,6 +32,7 @@ class PartsController < ApplicationController
   end
 
   def destroy
+    # binding.pry
     @part.destroy
   end
 
