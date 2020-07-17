@@ -1,21 +1,19 @@
 require 'pry'
 class PartsController < ApplicationController
-    before_action :set_part, only: [:show, :update, :destroy, :create, :post]
+    before_action :set_part, only: [:show]
 
-  # GET /parts
   def index
     @parts = Parts.all
 
     render json: @parts
   end
 
-  # GET /pcs/1
   def show
     render json: @part
   end
 
-  # POST /pcs
   def create
+    # binding.pry
     @part = Part.new(part_params)
 
     if @part.save
@@ -25,7 +23,6 @@ class PartsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /pcs/1
   def update
     if @part.update(part_params)
       render json: @part
@@ -34,7 +31,6 @@ class PartsController < ApplicationController
     end
   end
 
-  # DELETE /pcs/1
   def destroy
     @part.destroy
   end
