@@ -135,14 +135,16 @@ function displayCreatePartForm() {
 }
 
 function createPart(id) {
-    let pc = this.dataset.id
+    let currentId = this.dataset.id
+    let pc = this.dataset
     event.preventDefault()
     const part = {
         name: document.getElementById('name').value,
-        price: document.getElementById('price').value
+        price: document.getElementById('price').value,
+        pc_id: currentId 
     }
 
-    fetch(BASE_URL+`/pcs/${pc}/parts`, {
+    fetch(BASE_URL+`/pcs/${currentId}/parts`, {
         method: "POST",
         body: JSON.stringify(part),
         headers: {
@@ -153,10 +155,11 @@ function createPart(id) {
     .then(resp => resp.json())
     .then(part => {
         let showPcs = document.querySelector('#show-pcs ul')
-        let pd = new Pd()
-        showParts.innerHTML += pd.renderULs()
+        let pd = new Pd(pc)
+        showPcs.innerHTML += pd.renderPc()
+        pd.renderULs()
         attachClickToLinks()
-        clearPartForm()
+        clearForm()
     })
 }
 
