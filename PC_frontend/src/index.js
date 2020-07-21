@@ -13,7 +13,7 @@ function getPcs() {
     fetch(BASE_URL+"/pcs")
     .then(resp => resp.json())
     .then(pcs => {
-        pcs.forEach(pc => {
+        pcs.map(pc => {
             let pd = new Pd(pc)
             showPcs.innerHTML += pd.renderPc()
             pd.renderULs()
@@ -38,12 +38,14 @@ function attachClickToLinks () {
     let pcs = document.querySelectorAll('li a')
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
+    // document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
     document.querySelectorAll("#partForm").forEach(pc => pc.addEventListener('click', displayCreatePartForm))
     document.querySelectorAll("#deletePart").forEach(part => part.addEventListener('click', removePart))
 }
 
 function displayPc() {
+    event.preventDefault()
     clearForm()
     clearULs()
     let id = event.target.dataset.id 
@@ -55,12 +57,12 @@ function displayPc() {
         showPcs.innerHTML += `
         <h3>${pc.name}</h3>
         <p>${pc.description}</p>
-        
         `
     })
 }
 
 function displayCreateForm() {
+    event.preventDefault()
     let pcFormDiv = document.getElementById('pc-form')
     let html = `
         <form>
@@ -102,20 +104,8 @@ function createPc() {
     })
 }
 
-function removePc() {
-    event.preventDefault() 
-    clearForm()
-    fetch(BASE_URL+`/pcs/${event.target.parentElement.dataset.id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
-    })
-    .then(event.target.parentElement.remove())
-}
-
 function displayCreatePartForm() {
+    event.preventDefault()
     let id = this.dataset.id
     let partFormDiv = document.getElementById('part-form')
     let html = `
@@ -124,7 +114,7 @@ function displayCreatePartForm() {
             <input type="text" id="name">
             <label>Price:</label>
             <input type="text" id="price">
-            <input type="submit">
+            <input type="submit"></input>
         </form>
     `
     partFormDiv.innerHTML = html
@@ -132,9 +122,8 @@ function displayCreatePartForm() {
 }
 
 function createPart(id) {
-    let currentId = this.dataset.id
-    let pc = this.dataset
     event.preventDefault()
+    let currentId = this.dataset.id
     const part = {
         name: document.getElementById('name').value,
         price: document.getElementById('price').value,
@@ -160,9 +149,22 @@ function createPart(id) {
     })
 }
 
+function removePc() {
+    event.preventDefault() 
+    fetch(BASE_URL+`/pcs/${event.target.dataset.id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(event.target.parentElement.remove())
+    .then(getPcs())
+}
+
 function removePart() {
-    let id = this.dataset.id 
     event.preventDefault()
+    let id = this.dataset.id 
     clearPartForm()
     fetch(BASE_URL+`/parts/${id}`, {
         method: 'DELETE',
@@ -185,6 +187,4 @@ function clearParts () {
     let clear = document.getElementById('parts')
     clear.innerHTML = ""
 }
-
-
 

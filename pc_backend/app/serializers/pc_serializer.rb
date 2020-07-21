@@ -1,4 +1,4 @@
 class PcSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :part_id
-  has_many :parts
+  attributes :id, :name, :description
+  has_many :parts, serializer: PartSerializer
 end
