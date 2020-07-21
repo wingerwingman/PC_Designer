@@ -44,7 +44,6 @@ function attachClickToLinks () {
 }
 
 function displayPc() {
-    event.preventDefault()
     clearForm()
     clearULs()
     let id = event.target.dataset.id 
@@ -61,7 +60,6 @@ function displayPc() {
 }
 
 function displayCreateForm() {
-    event.preventDefault()
     let pcFormDiv = document.getElementById('pc-form')
     let html = `
         <form>
@@ -104,9 +102,8 @@ function createPc() {
 }
 
 function displayCreatePartForm() {
-    event.preventDefault()
     let id = this.dataset.id
-    let partFormDiv = document.querySelector(`li#pc-${id} #parts`)
+    let partFormDiv = document.querySelector(`li#pc-${id} #part-form`)
     let html = `
         <form data-id='${id}'>
             <label>Part:</label>
@@ -139,7 +136,7 @@ function createPart(id) {
     })
     .then(resp => resp.json())
     .then(part => {
-        let showPart = document.querySelector('#parts').innerHTML += `
+        let showPart = document.querySelector(`li#pc-${this.dataset.id} #parts`).innerHTML += `
         <li id='${part.id}'>
         Part: ${part.name} $${part.price}<button id="deletePart" data-id="${part.id}">Delete</button></li>
         </li>`
@@ -149,7 +146,6 @@ function createPart(id) {
 }
 
 function removePc() {
-    event.preventDefault() 
     clearForm()
     fetch(BASE_URL+`/pcs/${event.target.dataset.id}`, {
         method: 'DELETE',
@@ -162,7 +158,6 @@ function removePc() {
 }
 
 function removePart() {
-    event.preventDefault()
     let id = this.dataset.id 
     clearPartForm()
     fetch(BASE_URL+`/parts/${id}`, {
@@ -173,8 +168,6 @@ function removePart() {
         }
     })
     .then(event.target.parentElement.remove())
-    // .then(clearParts())
-    // .then(Pd.renderULs())
 }
 
 function clearPartForm() {
