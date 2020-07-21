@@ -13,7 +13,6 @@ class PartsController < ApplicationController
   end
 
   def create
-    # binding.pry
     @part = Part.new(part_params)
 
     if @part.save
@@ -32,7 +31,6 @@ class PartsController < ApplicationController
   end
 
   def destroy
-    # binding.pry
     @part.destroy
   end
 

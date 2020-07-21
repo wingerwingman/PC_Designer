@@ -38,7 +38,6 @@ function attachClickToLinks () {
     let pcs = document.querySelectorAll('li a')
 
     document.getElementById("pcForm").addEventListener('click', displayCreateForm)
-    // document.getElementById("pcs").addEventListener('click', getPcs)
     document.querySelectorAll("#delete").forEach(pc => pc.addEventListener('click', removePc))
     document.querySelectorAll("#partForm").forEach(pc => pc.addEventListener('click', displayCreatePartForm))
     document.querySelectorAll("#deletePart").forEach(part => part.addEventListener('click', removePart))

@@ -16,7 +16,6 @@ class PcsController < ApplicationController
   # POST /pcs
   def create
     @pc = Pc.new(pc_params)
-    # binding.pry
     if @pc.save
       render json: @pc, status: :created, location: @pc
     else
