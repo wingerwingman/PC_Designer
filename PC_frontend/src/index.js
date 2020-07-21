@@ -107,7 +107,7 @@ function createPc() {
 function displayCreatePartForm() {
     event.preventDefault()
     let id = this.dataset.id
-    let partFormDiv = document.getElementById('part-form')
+    let partFormDiv = document.querySelector(`li#pc-${id} #parts`)
     let html = `
         <form data-id='${id}'>
             <label>Part:</label>
@@ -151,6 +151,7 @@ function createPart(id) {
 
 function removePc() {
     event.preventDefault() 
+    clearForm()
     fetch(BASE_URL+`/pcs/${event.target.dataset.id}`, {
         method: 'DELETE',
         headers: {
@@ -159,7 +160,6 @@ function removePc() {
         }
     })
     .then(event.target.parentElement.remove())
-    .then(getPcs())
 }
 
 function removePart() {
