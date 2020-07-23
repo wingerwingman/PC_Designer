@@ -117,7 +117,7 @@ function displayCreatePartForm() {
     document.querySelector('form').addEventListener('submit',  createPart)
 }
 
-function createPart(id) {
+function createPart() {
     event.preventDefault()
     let currentId = this.dataset.id
     const part = {
@@ -171,12 +171,10 @@ function removePart() {
 }
 
 function clearPartForm() {
-    let pcFormDiv = document.getElementById('part-form')
-    pcFormDiv.innerHTML = ""
-}
-
-function clearParts () {
-    let clear = document.getElementById('parts')
-    clear.innerHTML = ""
+    let partFormsDiv = document.querySelectorAll('#part-form')
+    let i;
+    for (i = 0; i < partFormsDiv.length; i++){
+        partFormsDiv[i].innerHTML = "";
+    }
 }
 
